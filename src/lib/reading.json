@@ -1,0 +1,23 @@
+[
+    {
+      "title": "Data Feminism",
+      "author": "Catherine D’Ignazio & Lauren F. Klein",
+      "image": "/images/reading/Data_feminism.jpg",
+      "year": 2020,
+      "description": "Exploring how power shapes data and how data can be used for liberation."
+    },
+    {
+      "title": "Energy and Civilization",
+      "author": "Vaclav Smil",
+      "image": "/images/reading/energy_civilization.jpg",
+      "year": 2017,
+      "description": "A sweeping history of how energy has shaped human societies."
+    },
+    {
+      "title": "The Grid",
+      "author": "Gretchen Bakke",
+      "image": "/images/reading/the-grid.jpg",
+      "year": 2016,
+      "description": "An anthropological look at the U.S. electric grid and its future."
+    }
+  ]

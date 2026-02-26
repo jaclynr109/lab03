@@ -1,108 +1,105 @@
 :root {
     /* Define a custom color palette using OKLCH color space */
     --color-accent: oklch(20% 75% 0);
-}
-
-body {
+  }
+  
+  body {
     /* Set line height to 1.5 times the font size
        and use the OS’s UI font as the website font */
     font: 100%/1.5 system-ui;
     max-width: 100ch;
     margin-inline: max(1em, (100% - 100ch) / 2);
-}
-
-nav {
+  }
+  
+  nav {
     display: flex;
     margin-bottom: 1.5em;
     border-bottom: 1px solid oklch(80% 3% 200);
-}
-
-nav a {
+  }
+  
+  nav a {
     flex: 1;
     text-align: center;
     padding: 0.5em;
     text-decoration: none;
     color: inherit;
-}
-
-nav a.current {
+  }
+  
+  nav a.current {
     border-bottom: 0.4em solid oklch(80% 3% 200);
     padding-bottom: 0.1em;
-}
-
-nav a:hover {
+  }
+  
+  nav a:hover {
     border-bottom: 0.4em solid var(--color-accent);
     background-color: oklch(from var(--color-accent) 95% 5% h);
-}
-
-input,
-textarea,
-button {
+  }
+  
+  input,
+  textarea,
+  button {
     font: inherit;
-}
-
-form {
+  }
+  
+  form {
     display: grid;
     grid-template-columns: auto 1fr;
     gap: 1em;
-}
-
-label {
+  }
+  
+  label {
     display: grid;
     grid-template-columns: subgrid;
     grid-column: 1 / -1;
-}
-
-button {
+  }
+  
+  button {
     grid-column: 1 / -1;
-}
-
-.projects {
+  }
+  
+  /* Grid container used on Projects page + Home highlights */
+  .projects {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(15em, 1fr));
+    grid-template-rows: auto auto 1fr; /* define 3 rows */
     gap: 1em;
-}
-
-article {
-    display: grid;
-    grid-template-rows: subgrid;
-    grid-row: span 3;
-}
-
-h2 {
-    margin: 0;
-}
-
-h1 {
+  }
+  
+  h1 {
     font-size: 4rem;
-}
-
-h1, h2, h3, h4, h5, h6 {
+  }
+  
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     line-height: 1.1;
     text-wrap: balance;
-}
-
-body.resume section {
+  }
+  
+  /* Resume page styles (applies to content wrapped in <div class="resume">...) */
+  .resume section {
     margin-block: 2rem;
   }
   
-  body.resume h1 {
+  .resume h1 {
     margin-bottom: 0.5rem;
   }
   
-  body.resume h2 {
+  .resume h2 {
     border-bottom: 2px solid var(--color-accent);
     padding-bottom: 0.25rem;
     margin-bottom: 1rem;
     color: var(--color-accent);
   }
   
-  body.resume ul {
+  .resume ul {
     margin-top: 0.5rem;
   }
   
-  
-  body.resume article {
+  .resume article {
     border-left: 4px solid var(--color-accent);
     padding: 1rem;
     margin-bottom: 1.5rem;
