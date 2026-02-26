@@ -1,3 +1,6 @@
+<script>
+  import projects from "$lib/projects.json";
+</script>
 <svelte:head>
   <title>Projects</title>
 </svelte:head>
