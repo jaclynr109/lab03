@@ -1,15 +1,7 @@
 <svelte:head>
   <title>Contact</title>
 </svelte:head>
-<nav>
-  <a href=".">Home</a>
-  <a href="projects">Projects</a>
-  <a class="current" href="contact">Contact</a>
-  <a href="resume">Resume</a>
-  <a href="https://github.com/jaclynr109" target="_blank" rel="noreferrer">
-    GitHub
-  </a>
-</nav>
+
 <h1>Contact</h1>
 <form action="mailto:183286511+jaclynr109@users.noreply.github.com" method="GET" enctype="text/plain">
   <label>
