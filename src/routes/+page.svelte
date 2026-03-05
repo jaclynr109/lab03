@@ -6,7 +6,7 @@
   import ReadingItem from "$lib/ReadingItem.svelte";
 </script>
 
-<nav>
+<!-- <nav>
   <a class="current" href=".">Home</a>
   <a href="projects">Projects</a>
   <a href="contact">Contact</a>
@@ -14,7 +14,7 @@
   <a href="https://github.com/jaclynr109" target="_blank" rel="noreferrer">
     GitHub
   </a>
-</nav>
+</nav> -->
 
 <h1>Jaclyn Rambarran</h1>
 
