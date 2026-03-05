@@ -10,35 +10,13 @@
     max-width: 100ch;
     margin-inline: max(1em, (100% - 100ch) / 2);
   }
-  
-  nav {
-    display: flex;
-    margin-bottom: 1.5em;
-    border-bottom: 1px solid oklch(80% 3% 200);
-  }
-  
-  nav a {
-    flex: 1;
-    text-align: center;
-    padding: 0.5em;
-    text-decoration: none;
-    color: inherit;
-  }
-  
-  nav a.current {
-    border-bottom: 0.4em solid oklch(80% 3% 200);
-    padding-bottom: 0.1em;
-  }
-  
-  nav a:hover {
-    border-bottom: 0.4em solid var(--color-accent);
-    background-color: oklch(from var(--color-accent) 95% 5% h);
-  }
+
   
   input,
   textarea,
-  button {
-    font: inherit;
+  button,
+  select {
+    font-family: inherit;
   }
   
   form {
@@ -66,7 +44,7 @@
   }
   
   h1 {
-    font-size: 4rem;
+    font-size: 2.25rem;
   }
   
   h1,
@@ -78,8 +56,43 @@
     line-height: 1.1;
     text-wrap: balance;
   }
-  
+
   /* Resume page styles (applies to content wrapped in <div class="resume">...) */
+  .resume {
+    /* Derived colors that stay readable in light + dark */
+    --resume-accent: color-mix(in oklch, var(--color-accent), canvastext 60%);
+    --resume-card: color-mix(in oklch, canvas, canvastext 6%);
+  }
+
+  .resume section {
+    margin-block: 2rem;
+  }
+
+  .resume h1 {
+    margin-bottom: 0.5rem;
+  }
+
+  .resume h2 {
+    border-bottom: 2px solid var(--resume-accent);
+    padding-bottom: 0.25rem;
+    margin-bottom: 1rem;
+    color: var(--resume-accent);
+  }
+
+  .resume ul {
+    margin-top: 0.5rem;
+  }
+
+  .resume article {
+    border-left: 4px solid var(--resume-accent);
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    background-color: var(--resume-card);
+    border-radius: 6px;
+    color: canvastext; /* ensures the text is readable in dark mode */
+  }
+  
+  /* Resume page styles (applies to content wrapped in <div class="resume">...)
   .resume section {
     margin-block: 2rem;
   }
@@ -105,4 +118,5 @@
     margin-bottom: 1.5rem;
     background-color: oklch(from var(--color-accent) 97% 3% h);
     border-radius: 6px;
-  }
+  } */
+
