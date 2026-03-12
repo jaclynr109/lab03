@@ -1,4 +1,5 @@
 <script>
+    import { base } from '$app/paths';
     export let data = {};
   </script>
   
@@ -6,7 +7,7 @@
     <h2>{data.title}</h2>
   
     {#if data.image}
-      <img src={data.image} alt={data.title} />
+      <img src={`${base}${data.image}`} alt={data.title} />
     {/if}
   
     {#if data.description}
