@@ -1,62 +1,68 @@
 [
     {
-      "title": "Housing Injustice (A2)",
-      "image": "https://vis-society.github.io/labs/2/images/empty.svg",
-      "description": "This is an exploratory data analysis of housing data in Boston. "
+      "title": "Charging Ahead: V2G School Bus Thesis",
+      "year": 2026,
+      "image": "/images/V2G.jpeg",
+      "description": "Master’s thesis modeling the feasibility and grid value of vehicle-to-grid electric school buses in California.",
+      "story": "I wanted to study a climate solution that was both technically interesting and grounded in public benefit. Electric school buses stood out because they are batteries on wheels, but also because they sit idle for long stretches and serve communities directly. This project pushed me to connect power system modeling, transportation behavior, and policy design into one story about what a more participatory energy transition could look like."
     },
     {
-      "title": "Exercitationem recusandae deleniti voluptate.",
-      "image": "https://vis-society.github.io/labs/2/images/empty.svg",
-      "description": "Rerum optio eligendi numquam id qui repellendus ipsam eos labore nihil! At quas distinctio dignissimos et dolorum dolore aliquam laboriosam non minus minima qui, fugiat eveniet quisquam officiis placeat ullam!"
+      "title": "CAISO Dispatch and Emissions Analysis",
+      "year": 2026,
+      "image": "/images/emissions.jpeg",
+      "description": "Analysis of dispatch, ramping, and fossil generator emissions using GenX outputs and EPA CEMS data.",
+      "story": "I kept returning to the question of what grid flexibility actually displaces in practice. It is easy to say storage reduces emissions, but much harder to trace that claim through hourly operations and fossil plant behavior. This project became a way to connect model outputs to real generator-level emissions patterns and ask whether reducing ramping stress could produce measurable environmental gains."
     },
     {
-      "title": "Totam temporibus ullam ea.",
-      "image": "https://vis-society.github.io/labs/2/images/empty.svg",
-      "description": "Quibusdam vero dicta explicabo quos temporibus cum ullam, minus magnam aliquid eveniet nesciunt fugit debitis voluptatibus, incidunt ad voluptatem, corporis accusamus blanditiis provident ea culpa. Blanditiis harum minus architecto impedit!"
+      "title": "Advancing Massachusetts Power Grant Research",
+      "year": 2025,
+      "image": "/images/AMP.jpeg",
+      "description": "Policy research and stakeholder analysis for a Massachusetts storage and resilience grant program.",
+      "story": "What interested me most was not just where money should go, but how programs decide what counts as value in the first place. Through this work, I thought deeply about community benefits, permitting barriers, and which organizations are empowered to shape project design. The project reinforced my belief that implementation details are never neutral; they determine who a clean energy transition is really for."
     },
     {
-      "title": "Nobis possimus suscipit pariatur?",
-      "image": "https://vis-society.github.io/labs/2/images/empty.svg",
-      "description": "Excepturi qui facilis suscipit molestias. Iusto distinctio magnam voluptatum iste dicta saepe eum, amet error? Consectetur, placeat blanditiis quisquam, animi natus autem deleniti sit voluptatibus architecto inventore commodi asperiores omnis."
+      "title": "Housing Justice in Greater Boston",
+      "year": 2025,
+      "image": "/images/housing.jpeg",
+      "description": "Research project examining investor ownership, vacancies, and housing justice across Boston-area submarkets.",
+      "story": "This project started from a frustration with how abstract housing conversations can become. I wanted to map ownership patterns in a way that made displacement pressures and neighborhood inequality more visible. Working through the data made clear that categories like vacancy, ownership, and investment are not just technical variables; they are part of a larger story about power, extraction, and who gets to stay in the city."
     },
     {
-      "title": "Sequi illo ab rem!",
-      "image": "https://vis-society.github.io/labs/2/images/empty.svg",
-      "description": "Sequi, modi tempora officia magni iste velit itaque minus amet accusantium deserunt placeat error? Aspernatur accusamus, numquam quam id velit quasi atque in consectetur, temporibus rem impedit dignissimos. Pariatur, recusandae."
+      "title": "COVID-19 Visualization Redesign",
+      "year": 2025,
+      "image": "/images/covid.jpeg",
+      "description": "Data visualization assignment redesigning COVID-19 case graphics to better communicate seasonality and scale.",
+      "story": "I was drawn to the challenge of how visual design shapes emotional interpretation. Rather than treating charts as neutral containers for numbers, I wanted to think about pacing, annotation, and visual emphasis as rhetorical choices. This project helped me articulate a broader principle I keep returning to: the form of a visualization is part of the argument it makes."
     },
     {
-      "title": "Iure nesciunt cupiditate aperiam?",
-      "image": "https://vis-society.github.io/labs/2/images/empty.svg",
-      "description": "Distinctio est delectus harum velit id labore laudantium ipsa molestias reprehenderit fugit officiis itaque suscipit dolorem soluta mollitia, accusamus deleniti. Nisi quis animi optio numquam consectetur exercitationem? Ea, eaque ipsum!"
+      "title": "Interactive Portfolio Website",
+      "year": 2026,
+      "image": "/images/personal_site.jpeg",
+      "description": "Personal website built with Svelte to showcase projects, writing, and technical work.",
+      "story": "I wanted a space that felt more alive than a static resume. Building the site became a small design exercise in how to present technical work without stripping away the values and motivations behind it. Every layout choice made me ask the same question: what do I want people to understand about the kind of researcher and builder I am?"
     },
     {
-      "title": "Minima in eum dolores?",
-      "image": "https://vis-society.github.io/labs/2/images/empty.svg",
-      "description": "Beatae nostrum quos adipisci fuga, odit quibusdam harum ducimus, eaque quam inventore delectus omnis tenetur mollitia. Minima id accusantium magnam minus consequuntur quia harum, dolore natus odit quo enim unde!"
+      "title": "School Bus Fleet Electrification Explorer",
+      "year": 2024,
+      "image": "/images/school_bus.jpeg",
+      "description": "Exploratory analysis of school bus fleet data, vehicle replacement timing, and electrification opportunities.",
+      "story": "Before I had a full thesis framing, I was trying to understand the basic landscape: where the buses were, how old they were, and what an electrification opportunity might even mean in practice. This project was less polished than later work, but it was where the bigger research story began. It taught me that good modeling questions often start with descriptive curiosity."
     },
     {
-      "title": "Excepturi, quibusdam voluptatibus? Sit?",
-      "image": "https://vis-society.github.io/labs/2/images/empty.svg",
-      "description": "Dicta beatae hic amet provident. Eveniet temporibus distinctio mollitia veniam consequuntur iusto commodi accusantium voluptatum eius sit dolorem atque, tempore natus dignissimos odit voluptates ipsum. Officiis maiores harum odit facere."
+      "title": "Energy Systems Modeling with PyPSA-USA",
+      "year": 2024,
+      "image": "/images/pypsa.jpeg",
+      "description": "Scenario analysis using PyPSA-USA to study grid operations, prices, and decarbonization pathways.",
+      "story": "I was fascinated by how large, complex systems can be represented through carefully structured data and constraints. Working with PyPSA-USA gave me a way to see how assumptions around fuels, transmission, and technology costs ripple through an entire modeled grid. It also made me more attentive to the politics hidden inside modeling defaults and data pipelines."
     },
     {
-      "title": "Minus architecto earum error!",
-      "image": "https://vis-society.github.io/labs/2/images/empty.svg",
-      "description": "In laboriosam esse ab nostrum quasi. Rerum, soluta saepe quia odit ducimus, iste quaerat illo a dolorum minima sapiente amet atque officiis. Architecto reiciendis fugit sapiente doloremque tenetur! Nemo, enim?"
-    },
-    {
-      "title": "Aut inventore autem dignissimos.",
-      "image": "https://vis-society.github.io/labs/2/images/empty.svg",
-      "description": "Dicta nobis voluptatum voluptatem, ullam adipisci beatae numquam sint quasi! Eius, odit fugiat dicta repudiandae deserunt consequuntur vel aut neque, nam animi voluptatem odio, inventore quaerat expedita quos reprehenderit laudantium."
-    },
-    {
-      "title": "Possimus veniam voluptatibus asperiores?",
-      "image": "https://vis-society.github.io/labs/2/images/empty.svg",
-      "description": "Consequatur ipsum recusandae, natus inventore omnis ipsam delectus error quidem possimus pariatur? Perspiciatis, praesentium nemo sint magnam provident aliquid? Accusamus, consequatur earum. Magnam, qui quam ipsam repellat expedita aliquid amet?"
-    },
-    {
-      "title": "Esse ducimus molestias quas?",
-      "image": "https://vis-society.github.io/labs/2/images/empty.svg",
-      "description": "Ratione mollitia culpa eaque. Cum nobis corporis eos neque voluptates aliquam asperiores possimus vero dolorum, amet temporibus modi architecto sapiente pariatur delectus vitae minus! Impedit dolor recusandae provident perspiciatis odit."
+      "title": "Community Energy Resilience StoryMap",
+      "year": 2023,
+      "image": "/images/community.jpeg",
+      "description": "A narrative mapping project on local energy resilience, public infrastructure, and climate vulnerability.",
+      "story": "I wanted to experiment with a format that felt more accessible than a report and more grounded than a dashboard. The result was a narrative map that connected place-based vulnerability with questions of energy resilience and public investment. It reminded me that storytelling is not a layer added after analysis; it is one of the ways analysis becomes meaningful to other people."
     }
   ]
+
+  
+

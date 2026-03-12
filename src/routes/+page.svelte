@@ -1,4 +1,27 @@
 <script>
+  import { onMount } from "svelte";
+
+  let githubData = null;
+  let loading = true;
+  let error = null;
+
+  onMount(async () => {
+    try {
+      console.log("Page has been mounted!");
+
+      let response = await fetch("https://api.github.com/users/jaclynr109");
+      console.log(response);
+
+      githubData = await response.json();
+      console.log(githubData);
+
+    } catch (err) {
+      error = err;
+    }
+
+    loading = false;
+  });
+
   import projects from "$lib/projects.json";
   import Project from "$lib/Project.svelte";
 
@@ -18,6 +41,31 @@
   alt="Portrait of Jaclyn smiling indoors"
   width="300"
 />
+
+{#if loading}
+  <p>Loading...</p>
+{:else if error}
+  <p>Something went wrong: {error.message}</p>
+{:else}
+  <section class="github-stats">
+    <h2>My GitHub Stats</h2>
+
+    <dl>
+      <dt>Followers</dt>
+      <dd>{githubData.followers}</dd>
+
+      <dt>Following</dt>
+      <dd>{githubData.following}</dd>
+
+      <dt>Public Repositories</dt>
+      <dd>{githubData.public_repos}</dd>
+
+      <dt>Public Gists</dt>
+      <dd>{githubData.public_gists}</dd>
+    </dl>
+  </section>
+{/if}
+
 
 <!-- ===================== -->
 <!-- Latest Projects       -->
@@ -52,5 +100,26 @@
     display: grid;
     gap: 1.5rem;
     margin-bottom: 3rem;
+  }
+  .github-stats {
+  margin: 2rem 0;
+  }
+
+  .github-stats dl {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    text-align: center;
+  }
+
+  .github-stats dt {
+    grid-row: 1;
+    font-weight: bold;
+  }
+
+  .github-stats dd {
+    grid-row: 2;
+    margin: 0;
+    font-size: 1.4rem;
   }
 </style>
