@@ -27,6 +27,7 @@
 
   import reading from "$lib/reading.json";
   import ReadingItem from "$lib/ReadingItem.svelte";
+  
 </script>
 
 <h1>Jaclyn Rambarran</h1>
