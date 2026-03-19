@@ -13,8 +13,13 @@
   {#if data.description || data.year}
     <p>
       {#if data.year}
-        <strong>{data.year}</strong>{#if data.description} | {/if}
+        <strong class="year">{data.year}</strong>
       {/if}
+
+      {#if data.year && data.description}
+        <span class="separator">|</span>
+      {/if}
+
       {data.description}
     </p>
   {/if}
@@ -39,5 +44,15 @@
 
   p {
     margin: 0;
+    line-height: 1.4;
+  }
+
+  .separator {
+    margin: 0 0.5rem;
+    color: #888; /* subtle polish */
+  }
+
+  .year {
+    font-weight: 600;
   }
 </style>
