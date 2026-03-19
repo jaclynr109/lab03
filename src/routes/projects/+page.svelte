@@ -60,7 +60,7 @@
   {/each}
 </div>
 
-<section>
+<!-- <section>
   <h2>Data wrangling result</h2>
   <pre>{JSON.stringify(wrangled, null, 2)}</pre>
 </section>
@@ -68,7 +68,7 @@
 <section>
   <h2>Percent of total lines by language</h2>
   <pre>{JSON.stringify(percentages, null, 2)}</pre>
-</section>
+</section> -->
 
 <style>
   .outro {
