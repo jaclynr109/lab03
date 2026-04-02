@@ -6,25 +6,39 @@
 
   let locData = [];
   let barData = [];
+  let commits = [];
 
   onMount(async () => {
     locData = await d3.csv(`${base}/loc.csv`, row => ({
       ...row,
       line: Number(row.line),
       length: Number(row.length),
-      depth: Number(row.depth)
+      depth: Number(row.depth),
+      date: new Date(row.date + "T00:00" + row.timezone),
+      datetime: new Date(row.datetime)
     }));
 
-    barData = d3.rollups(
-      locData,
-      v => v.length,
-      d => d.type
-    )
-      .map(([type, count]) => ({
-        label: String(type),
-        value: count
-      }))
-      .sort((a, b) => b.value - a.value);
+    commits = d3.groups(locData, d => d.commit).map(([commit, lines]) => {
+      let first = lines[0];
+      let { author, date, time, timezone, datetime } = first;
+
+      let ret = {
+        id: commit,
+        url: "https://github.com/jaclynr109/lab03/commit/" + commit,
+        author,
+        date,
+        time,
+        timezone,
+        datetime,
+        hourFrac: datetime.getHours() + datetime.getMinutes() / 60,
+        totalLines: lines.length,
+        lines: lines
+      };
+
+      return ret;
+    });
+
+    // console.log(commits);
   });
 </script>
 
