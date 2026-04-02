@@ -24,6 +24,8 @@
   let yAxisGridlines;
 
   let hoveredIndex = -1;
+  let cursor = { x: 0, y: 0 };
+
   $: hoveredCommit = commits[hoveredIndex] ?? hoveredCommit ?? {};
 
   $: colorScale = d3.scaleLinear()
@@ -109,8 +111,16 @@
 
 <h3>Commits by time of day</h3>
 
+<!-- DEBUG OUTPUT -->
+<p>{JSON.stringify(cursor, null, "\t")}</p>
+
 <div class="chart-layout">
-  <dl class="info tooltip" hidden={hoveredIndex === -1}>
+  <dl
+    class="info tooltip"
+    hidden={hoveredIndex === -1}
+    style:left="{cursor.x + 16}px"
+    style:top="{cursor.y + 16}px"
+  >
     <dt>Commit</dt>
     <dd><a href={hoveredCommit.url} target="_blank">{hoveredCommit.id}</a></dd>
 
@@ -152,7 +162,13 @@
           r={rScale(commit.totalLines)}
           fill="steelblue"
           fill-opacity="0.7"
-          on:mouseenter={() => hoveredIndex = index}
+          on:mouseenter={(evt) => {
+            hoveredIndex = index;
+            cursor = { x: evt.x, y: evt.y };
+          }}
+          on:mousemove={(evt) => {
+            cursor = { x: evt.x, y: evt.y };
+          }}
           on:mouseleave={() => hoveredIndex = -1}
         />
       {/each}
@@ -162,10 +178,7 @@
 
 <style>
   .chart-layout {
-    display: grid;
-    grid-template-columns: 220px 1fr;
-    gap: 1.5rem;
-    align-items: start;
+    position: relative;
   }
 
   svg {
@@ -198,11 +211,14 @@
   }
 
   .tooltip {
+    position: fixed;
+    z-index: 10;
     background-color: oklch(100% 0 0 / 0.85);
     border-radius: 10px;
     padding: 1rem;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
     backdrop-filter: blur(6px);
+    pointer-events: none;
   }
 
   .gridlines {
