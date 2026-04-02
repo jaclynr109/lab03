@@ -194,14 +194,15 @@
     <g class="dots">
       {#each commits as commit, index}
         <circle
-          cx={xScale(commit.datetime)}
-          cy={yScale(commit.hourFrac)}
-          r={rScale(commit.totalLines)}
-          fill="steelblue"
-          fill-opacity="0.7"
-          on:mouseenter={(evt) => dotInteraction(index, evt)}
-          on:mouseleave={(evt) => dotInteraction(index, evt)}
-          on:click={(evt) => dotInteraction(index, evt)}
+            cx={xScale(commit.datetime)}
+            cy={yScale(commit.hourFrac)}
+            r={rScale(commit.totalLines)}
+            fill="steelblue"
+            fill-opacity="0.7"
+            class:selected={clickedCommits.includes(commit)}
+            on:mouseenter={(evt) => dotInteraction(index, evt)}
+            on:mouseleave={(evt) => dotInteraction(index, evt)}
+            on:click={(evt) => dotInteraction(index, evt)}
         />
       {/each}
     </g>
@@ -273,4 +274,8 @@
     opacity: 1;
     fill: darkgreen;
   }
+
+  .selected {
+    fill: var(--color-accent);
+}
 </style>
