@@ -2,10 +2,11 @@
   import { base } from '$app/paths';
   import { onMount } from 'svelte';
   import * as d3 from 'd3';
+  import BarHorizontal from '$lib/BarHorizontal.svelte';
   import {
     computePosition,
     autoPlacement,
-    offset,
+    offset
   } from '@floating-ui/dom';
 
   let width = 1000, height = 600;
@@ -30,7 +31,6 @@
   let commitTooltip;
 
   let hoveredIndex = -1;
-  let cursor = { x: 0, y: 0 };
   let tooltipPosition = { x: 0, y: 0 };
   let clickedCommits = [];
 
@@ -38,7 +38,7 @@
 
   $: colorScale = d3.scaleLinear()
     .domain([0, 12, 24])
-    .range(["#1f3b73", "#f4a261", "#1f3b73"]);
+    .range(['#1f3b73', '#f4a261', '#1f3b73']);
 
   onMount(async () => {
     locData = await d3.csv(`${base}/loc.csv`, row => ({
@@ -46,7 +46,7 @@
       line: Number(row.line),
       length: Number(row.length),
       depth: Number(row.depth),
-      date: new Date(row.date + "T00:00" + row.timezone),
+      date: new Date(row.date + 'T00:00' + row.timezone),
       datetime: new Date(row.datetime)
     }));
 
@@ -56,7 +56,7 @@
 
       return {
         id: commit,
-        url: "https://github.com/jaclynr109/lb03/commit/" + commit,
+        url: 'https://github.com/jaclynr109/lb03/commit/' + commit,
         author,
         date,
         time,
@@ -74,20 +74,19 @@
   async function dotInteraction(index, evt) {
     let hoveredDot = evt.target;
 
-    if (evt.type === "mouseenter") {
+    if (evt.type === 'mouseenter') {
       hoveredIndex = index;
-      cursor = { x: evt.x, y: evt.y };
 
       tooltipPosition = await computePosition(hoveredDot, commitTooltip, {
-        strategy: "fixed",
+        strategy: 'fixed',
         middleware: [
           offset(5),
           autoPlacement()
-        ],
+        ]
       });
-    } else if (evt.type === "mouseleave") {
+    } else if (evt.type === 'mouseleave') {
       hoveredIndex = -1;
-    } else if (evt.type === "click") {
+    } else if (evt.type === 'click') {
       let commit = commits[index];
 
       if (!clickedCommits.includes(commit)) {
@@ -122,6 +121,22 @@
     .domain(minLines && maxLines ? [minLines, maxLines] : [1, 1])
     .range([5, 30]);
 
+  $: selectedLines =
+    clickedCommits.length > 0 ? clickedCommits.flatMap(d => d.lines) : locData;
+
+  $: selectedCounts = d3.rollup(
+    selectedLines,
+    v => v.length,
+    d => d.type
+  );
+
+  $: allTypes = Array.from(new Set(locData.map(d => d.type)));
+
+  $: barData = allTypes.map(type => ({
+    label: String(type),
+    value: selectedCounts.get(type) || 0
+  }));
+
   $: if (xAxis && xScale) {
     d3.select(xAxis).call(d3.axisBottom(xScale));
   }
@@ -148,27 +163,25 @@
 
 <h3>Commits by time of day</h3>
 
-<!-- <p>{JSON.stringify(cursor, null, "\t")}</p> -->
-
 <div class="chart-layout">
   <dl
     class="info tooltip"
     bind:this={commitTooltip}
     hidden={hoveredIndex === -1}
-    style:left={tooltipPosition.x + "px"}
-    style:top={tooltipPosition.y + "px"}
+    style:left={tooltipPosition.x + 'px'}
+    style:top={tooltipPosition.y + 'px'}
   >
     <dt>Commit</dt>
-    <dd><a href={hoveredCommit.url} target="_blank">{hoveredCommit.id}</a></dd>
+    <dd><a href={hoveredCommit.url} target="_blank" rel="noreferrer">{hoveredCommit.id}</a></dd>
 
     <dt>Author</dt>
     <dd>{hoveredCommit.author}</dd>
 
     <dt>Date</dt>
-    <dd>{hoveredCommit.datetime?.toLocaleString("en", { dateStyle: "full" })}</dd>
+    <dd>{hoveredCommit.datetime?.toLocaleString('en', { dateStyle: 'full' })}</dd>
 
     <dt>Time</dt>
-    <dd>{hoveredCommit.datetime?.toLocaleString("en", { timeStyle: "short" })}</dd>
+    <dd>{hoveredCommit.datetime?.toLocaleString('en', { timeStyle: 'short' })}</dd>
 
     <dt>Lines</dt>
     <dd>{hoveredCommit.totalLines}</dd>
@@ -194,20 +207,23 @@
     <g class="dots">
       {#each commits as commit, index}
         <circle
-            cx={xScale(commit.datetime)}
-            cy={yScale(commit.hourFrac)}
-            r={rScale(commit.totalLines)}
-            fill="steelblue"
-            fill-opacity="0.7"
-            class:selected={clickedCommits.includes(commit)}
-            on:mouseenter={(evt) => dotInteraction(index, evt)}
-            on:mouseleave={(evt) => dotInteraction(index, evt)}
-            on:click={(evt) => dotInteraction(index, evt)}
+          cx={xScale(commit.datetime)}
+          cy={yScale(commit.hourFrac)}
+          r={rScale(commit.totalLines)}
+          fill="steelblue"
+          fill-opacity="0.7"
+          class:selected={clickedCommits.includes(commit)}
+          on:mouseenter={(evt) => dotInteraction(index, evt)}
+          on:mouseleave={(evt) => dotInteraction(index, evt)}
+          on:click={(evt) => dotInteraction(index, evt)}
         />
       {/each}
     </g>
   </svg>
 </div>
+
+<h3>Language breakdown</h3>
+<BarHorizontal data={barData} />
 
 <style>
   .chart-layout {
@@ -277,5 +293,5 @@
 
   .selected {
     fill: var(--color-accent);
-}
+  }
 </style>
