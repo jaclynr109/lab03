@@ -110,7 +110,7 @@
 <h3>Commits by time of day</h3>
 
 <div class="chart-layout">
-  <dl class="info">
+  <dl class="info tooltip">
     <dt>Commit</dt>
     <dd><a href={hoveredCommit.url} target="_blank">{hoveredCommit.id}</a></dd>
 
@@ -188,6 +188,14 @@
 
   dl.info dd {
     margin: 0;
+  }
+
+  .tooltip {
+    background-color: oklch(100% 0 0 / 0.85);
+    border-radius: 10px;
+    padding: 1rem;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    backdrop-filter: blur(6px);
   }
 
   .gridlines {
