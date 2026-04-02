@@ -2,11 +2,12 @@
   import * as d3 from 'd3';
 
   export let data = [];
+  export let title = '';
 
   let width = 820;
   let height = 420;
 
-  let margin = { top: 80, right: 80, bottom: 70, left: 110 };
+  let margin = { top: 80, right: 180, bottom: 70, left: 110 };
   let innerWidth = width - margin.left - margin.right;
   let innerHeight = height - margin.top - margin.bottom;
 
@@ -36,6 +37,11 @@
         ? `${maxBars[0].label} has the most lines of code`
         : '';
 
+  $: annotationX = xScale(maxValue) + 12;
+  $: annotationY = maxBars.length > 0
+    ? yScale(maxBars[0].label) + yScale.bandwidth() / 2 + 4
+    : 0;
+
   $: if (xAxis && yAxis && data.length > 0) {
     d3.select(xAxis).call(
       d3.axisBottom(xScale)
@@ -55,7 +61,7 @@
       text-anchor="middle"
       class="chart-title"
     >
-      Lines of Code by Language
+      {title}
     </text>
 
     <g
@@ -91,48 +97,17 @@
         ></rect>
       {/each}
 
-      <!-- {#if maxBars.length > 0}
-        <line
-          x1={xScale(maxValue) * 0.72}
-          y1={yScale(maxBars[0].label) - 10}
-          x2={xScale(maxValue) * 0.9}
-          y2={yScale(maxBars[0].label) - 28}
-          stroke="black"
-          stroke-width="1.2"
-        ></line>
-
+      {#if maxBars.length > 0}
         <text
-          x={xScale(maxValue) * 0.9}
-          y={yScale(maxBars[0].label) - 34}
-          text-anchor="middle"
+          x={annotationX}
+          y={annotationY}
+          text-anchor="start"
           class="annotation"
         >
           {annotationText}
         </text>
-      {/if} -->
+      {/if}
 
-        {#if maxBars.length > 0}
-        <!-- Leader line -->
-        <line
-            x1={xScale(maxValue)}
-            y1={yScale(maxBars[0].label)}
-            x2={xScale(maxValue) - 40}
-            y2={yScale(maxBars[0].label) - 20}
-            stroke="black"
-            stroke-width="1.2"
-        ></line>
-
-        <!-- Annotation text ABOVE the bar and INSIDE chart -->
-        <text
-            x={xScale(maxValue) - 45}
-            y={yScale(maxBars[0].label) - 25}
-            text-anchor="end"
-            class="annotation"
-        >
-            {annotationText}
-        </text>
-        {/if}
-        
       <text
         x={innerWidth / 2}
         y={innerHeight + 50}
@@ -185,7 +160,7 @@
     display: grid;
     gap: 0.75rem;
     min-width: 170px;
-    }
+  }
 
   .legend li {
     display: flex;
@@ -215,7 +190,8 @@
   }
 
   .annotation {
-    font-size: 0.8em;
+    font-size: 0.7em;
     font-style: italic;
+    fill: #333;
   }
 </style>

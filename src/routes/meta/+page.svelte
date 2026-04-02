@@ -94,8 +94,6 @@
       } else {
         clickedCommits = clickedCommits.filter(c => c !== commit);
       }
-
-      console.log(clickedCommits);
     }
   }
 
@@ -222,8 +220,12 @@
   </svg>
 </div>
 
-<h3>Language breakdown</h3>
-<BarHorizontal data={barData} />
+<BarHorizontal
+  data={barData}
+  title={clickedCommits.length > 0
+    ? 'Selected Commits Breakdown'
+    : 'Website Breakdown'}
+/>
 
 <style>
   .chart-layout {
