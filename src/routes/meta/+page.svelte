@@ -110,7 +110,7 @@
 <h3>Commits by time of day</h3>
 
 <div class="chart-layout">
-  <dl class="info tooltip">
+  <dl class="info tooltip" hidden={hoveredIndex === -1}>
     <dt>Commit</dt>
     <dd><a href={hoveredCommit.url} target="_blank">{hoveredCommit.id}</a></dd>
 
@@ -178,6 +178,8 @@
     gap: 0.35em 1em;
     margin: 0;
     align-content: start;
+    transition-duration: 500ms;
+    transition-property: opacity, visibility;
   }
 
   dl.info dt {
@@ -188,6 +190,11 @@
 
   dl.info dd {
     margin: 0;
+  }
+
+  dl.info[hidden]:not(:hover, :focus-within) {
+    opacity: 0;
+    visibility: hidden;
   }
 
   .tooltip {
