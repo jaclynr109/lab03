@@ -2,6 +2,11 @@
   import { base } from '$app/paths';
   import { onMount } from 'svelte';
   import * as d3 from 'd3';
+  import {
+    computePosition,
+    autoPlacement,
+    offset,
+  } from '@floating-ui/dom';
 
   let width = 1000, height = 600;
 
@@ -22,9 +27,11 @@
   let xAxis;
   let yAxis;
   let yAxisGridlines;
+  let commitTooltip;
 
   let hoveredIndex = -1;
   let cursor = { x: 0, y: 0 };
+  let tooltipPosition = { x: 0, y: 0 };
 
   $: hoveredCommit = commits[hoveredIndex] ?? hoveredCommit ?? {};
 
@@ -62,6 +69,25 @@
 
     commits = d3.sort(commits, d => -d.totalLines);
   });
+
+  async function dotInteraction(index, evt) {
+    let hoveredDot = evt.target;
+
+    if (evt.type === "mouseenter") {
+      hoveredIndex = index;
+      cursor = { x: evt.x, y: evt.y };
+
+      tooltipPosition = await computePosition(hoveredDot, commitTooltip, {
+        strategy: "fixed",
+        middleware: [
+          offset(5),
+          autoPlacement()
+        ],
+      });
+    } else if (evt.type === "mouseleave") {
+      hoveredIndex = -1;
+    }
+  }
 
   $: [minDate, maxDate] = d3.extent(commits.map(d => d.date));
 
@@ -111,15 +137,15 @@
 
 <h3>Commits by time of day</h3>
 
-<!-- DEBUG OUTPUT -->
-<p>{JSON.stringify(cursor, null, "\t")}</p>
+<!-- <p>{JSON.stringify(cursor, null, "\t")}</p> -->
 
 <div class="chart-layout">
   <dl
     class="info tooltip"
+    bind:this={commitTooltip}
     hidden={hoveredIndex === -1}
-    style:left="{cursor.x + 16}px"
-    style:top="{cursor.y + 16}px"
+    style:left={tooltipPosition.x + "px"}
+    style:top={tooltipPosition.y + "px"}
   >
     <dt>Commit</dt>
     <dd><a href={hoveredCommit.url} target="_blank">{hoveredCommit.id}</a></dd>
@@ -162,14 +188,8 @@
           r={rScale(commit.totalLines)}
           fill="steelblue"
           fill-opacity="0.7"
-          on:mouseenter={(evt) => {
-            hoveredIndex = index;
-            cursor = { x: evt.x, y: evt.y };
-          }}
-          on:mousemove={(evt) => {
-            cursor = { x: evt.x, y: evt.y };
-          }}
-          on:mouseleave={() => hoveredIndex = -1}
+          on:mouseenter={(evt) => dotInteraction(index, evt)}
+          on:mouseleave={(evt) => dotInteraction(index, evt)}
         />
       {/each}
     </g>
