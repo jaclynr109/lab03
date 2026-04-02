@@ -9,7 +9,7 @@
     offset
   } from '@floating-ui/dom';
 
-  let width = 1000, height = 600;
+  let width = 700, height = 350;
 
   let margin = { top: 20, right: 20, bottom: 30, left: 50 };
 

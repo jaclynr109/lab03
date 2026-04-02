@@ -4,10 +4,10 @@
   export let data = [];
   export let title = '';
 
-  let width = 820;
-  let height = 420;
+  let width = 760;
+  let height = 280;
 
-  let margin = { top: 80, right: 180, bottom: 70, left: 110 };
+  let margin = { top: 50, right: 180, bottom: 55, left: 95 };
   let innerWidth = width - margin.left - margin.right;
   let innerHeight = height - margin.top - margin.bottom;
 
@@ -37,15 +37,15 @@
         ? `${maxBars[0].label} has the most lines of code`
         : '';
 
-  $: annotationX = xScale(maxValue) + 12;
+  $: annotationX = xScale(maxValue) + 10;
   $: annotationY = maxBars.length > 0
-    ? yScale(maxBars[0].label) + yScale.bandwidth() / 2 + 4
+    ? yScale(maxBars[0].label) + yScale.bandwidth() / 2 + 3
     : 0;
 
   $: if (xAxis && yAxis && data.length > 0) {
     d3.select(xAxis).call(
       d3.axisBottom(xScale)
-        .ticks(6)
+        .ticks(Math.min(d3.max(data, d => d.value), 10))
         .tickFormat(d3.format('d'))
     );
 
@@ -57,7 +57,7 @@
   <svg viewBox="0 0 {width} {height}">
     <text
       x={margin.left + innerWidth / 2}
-      y={30}
+      y={24}
       text-anchor="middle"
       class="chart-title"
     >
@@ -93,7 +93,7 @@
           height={yScale.bandwidth()}
           fill="none"
           stroke="black"
-          stroke-width="2.5"
+          stroke-width="2"
         ></rect>
       {/each}
 
@@ -110,7 +110,7 @@
 
       <text
         x={innerWidth / 2}
-        y={innerHeight + 50}
+        y={innerHeight + 42}
         text-anchor="middle"
         class="axis-label"
       >
@@ -119,12 +119,13 @@
 
       <text
         x={-(innerHeight / 2)}
-        y={-75}
+        y={-62}
         text-anchor="middle"
         transform="rotate(-90)"
         class="axis-label"
       >
-        Language
+        <tspan x={-(innerHeight / 2)} dy="0">Programming</tspan>
+        <tspan x={-(innerHeight / 2)} dy="1.1em">Language</tspan>
       </text>
     </g>
   </svg>
@@ -142,30 +143,31 @@
 <style>
   svg {
     width: 100%;
-    max-width: 860px;
+    max-width: 760px;
     height: auto;
     overflow: visible;
   }
 
   .container {
     display: flex;
-    gap: 2rem;
+    gap: 1.5rem;
     align-items: flex-start;
   }
 
   .legend {
     list-style: none;
     padding: 0;
-    margin: 10rem 0 0 0;
+    margin: 6rem 0 0 0;
     display: grid;
-    gap: 0.75rem;
-    min-width: 170px;
+    gap: 0.5rem;
+    min-width: 150px;
   }
 
   .legend li {
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    font-size: 0.9rem;
   }
 
   .swatch {
@@ -181,16 +183,16 @@
   }
 
   .chart-title {
-    font-size: 1.1em;
+    font-size: 1rem;
     font-weight: 700;
   }
 
   .axis-label {
-    font-size: 0.9em;
+    font-size: 0.8rem;
   }
 
   .annotation {
-    font-size: 0.7em;
+    font-size: 0.68rem;
     font-style: italic;
     fill: #333;
   }
