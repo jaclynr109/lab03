@@ -32,6 +32,7 @@
   let hoveredIndex = -1;
   let cursor = { x: 0, y: 0 };
   let tooltipPosition = { x: 0, y: 0 };
+  let clickedCommits = [];
 
   $: hoveredCommit = commits[hoveredIndex] ?? hoveredCommit ?? {};
 
@@ -86,6 +87,16 @@
       });
     } else if (evt.type === "mouseleave") {
       hoveredIndex = -1;
+    } else if (evt.type === "click") {
+      let commit = commits[index];
+
+      if (!clickedCommits.includes(commit)) {
+        clickedCommits = [...clickedCommits, commit];
+      } else {
+        clickedCommits = clickedCommits.filter(c => c !== commit);
+      }
+
+      console.log(clickedCommits);
     }
   }
 
@@ -190,6 +201,7 @@
           fill-opacity="0.7"
           on:mouseenter={(evt) => dotInteraction(index, evt)}
           on:mouseleave={(evt) => dotInteraction(index, evt)}
+          on:click={(evt) => dotInteraction(index, evt)}
         />
       {/each}
     </g>
