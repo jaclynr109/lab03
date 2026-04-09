@@ -8,6 +8,7 @@
     autoPlacement,
     offset
   } from '@floating-ui/dom';
+  import LineChart from '$lib/LineChart.svelte';
 
   let width = 700, height = 350;
 
@@ -35,6 +36,8 @@
   let clickedCommits = [];
 
   let svg;
+
+  let linesByDate = [];
 
   $: hoveredCommit = commits[hoveredIndex] ?? hoveredCommit ?? {};
 
@@ -73,6 +76,26 @@
     commits = d3.sort(commits, d => -d.totalLines);
   });
 
+  $: {
+  if (!locData.length) {
+      linesByDate = [];
+    } else {
+      let rolled = d3.rollups(
+        locData,
+        (values) => values.length,
+        (d) => d3.timeDay.floor(d.datetime)
+      ).map(([date, count]) => ({ date, count }));
+
+      let [minDate, maxDate] = d3.extent(rolled, (d) => d.date);
+
+      let allDays = d3.timeDays(minDate, d3.timeDay.offset(maxDate, 1));
+
+      linesByDate = allDays.map((date) => ({
+        date,
+        count: rolled.find((d) => +d.date === +date)?.count ?? 0
+      }));
+    }
+  }
   async function dotInteraction(index, evt) {
     let hoveredDot = evt.target;
 
@@ -278,6 +301,8 @@
     : 'Website Breakdown'}
 
 />
+
+<LineChart data={linesByDate} />
 
 <style>
   .chart-layout {
