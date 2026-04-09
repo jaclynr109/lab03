@@ -34,6 +34,8 @@
   let tooltipPosition = { x: 0, y: 0 };
   let clickedCommits = [];
 
+  let svg;
+
   $: hoveredCommit = commits[hoveredIndex] ?? hoveredCommit ?? {};
 
   $: colorScale = d3.scaleLinear()
@@ -97,6 +99,35 @@
     }
   }
 
+  $: brushSelection = null;
+
+  function brushed (evt) {
+    brushSelection = evt.selection;
+  }
+
+  function isCommitBrushed(commit) {
+    if (!brushSelection) {
+      return false;
+    }
+
+    let min = {
+      x: brushSelection[0][0],
+      y: brushSelection[0][1]
+    };
+
+    let max = {
+      x: brushSelection[1][0],
+      y: brushSelection[1][1]
+    };
+
+    let x = xScale(commit.datetime);
+    let y = yScale(commit.hourFrac);
+
+    return x >= min.x && x <= max.x && y >= min.y && y <= max.y;
+  }
+
+  $: brushedCommits = brushSelection ? commits.filter(isCommitBrushed) : [];
+
   $: [minDate, maxDate] = d3.extent(commits.map(d => d.date));
 
   $: maxDatePlusOne = maxDate ? new Date(maxDate) : null;
@@ -157,6 +188,26 @@
       .selectAll('.tick line')
       .attr('stroke', d => colorScale(d));
   }
+
+  $: if (svg) {
+    d3.select(svg)
+      .call(
+        d3.brush()
+          .extent([
+            [usableArea.left, usableArea.top],
+            [usableArea.right, usableArea.bottom]
+          ])
+          .on('brush end', brushed)
+      );
+
+    d3.select(svg).selectAll('.dots, .overlay ~ *').raise();
+  }
+
+  $: selectedCommits = Array.from(new Set([...clickedCommits, ...brushedCommits]));
+
+	$: selectedLines = (selectedCommits.length > 0 ? selectedCommits : commits).flatMap(d => d.lines);
+
+
 </script>
 
 <h3>Commits by time of day</h3>
@@ -185,7 +236,7 @@
     <dd>{hoveredCommit.totalLines}</dd>
   </dl>
 
-  <svg viewBox="0 0 {width} {height}">
+  <svg bind:this={svg} viewBox="0 0 {width} {height}">
     <g
       class="gridlines"
       transform="translate({usableArea.left}, 0)"
@@ -210,7 +261,7 @@
           r={rScale(commit.totalLines)}
           fill="steelblue"
           fill-opacity="0.7"
-          class:selected={clickedCommits.includes(commit)}
+          class:selected={ selectedCommits.includes(commit) }
           on:mouseenter={(evt) => dotInteraction(index, evt)}
           on:mouseleave={(evt) => dotInteraction(index, evt)}
           on:click={(evt) => dotInteraction(index, evt)}
@@ -222,9 +273,10 @@
 
 <BarHorizontal
   data={barData}
-  title={clickedCommits.length > 0
-    ? 'Selected Commits Breakdown'
+  title={selectedCommits.length > 0
+    ? `Lines of Code: ${selectedCommits.length} Selected Commits`
     : 'Website Breakdown'}
+
 />
 
 <style>
