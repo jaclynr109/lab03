@@ -13,6 +13,22 @@
   let xAxis;
   let yAxis;
 
+  let selectedIndex = -1;
+
+  let liveText = "";
+
+      let showChart = true;
+
+    function toggleView() {
+        showChart = !showChart;
+        liveText = showChart ? "Bar chart view shown." : "Table view shown.";
+    }
+
+
+  $: description = `A bar chart showing project counts by year. ${data
+    .map(d => `${d.label}: ${d.value} projects`)
+    .join(', ')}. ${annotationText}`;
+
   $: xScale = d3.scaleBand()
     .domain(data.map(d => d.label))
     .range([0, innerWidth])
@@ -24,8 +40,9 @@
     .domain([0, maxValue])
     .range([innerHeight, 0]);
 
-  $: colorScale = d3.scaleOrdinal(d3.schemeTableau10)
-    .domain(data.map(d => d.label));
+  $: colorScale = d3.scaleOrdinal()
+    .domain(data.map(d => d.label))
+    .range(d3.quantize(d3.interpolateBlues, data.length));
 
   $: maxBars = data.filter(d => d.value === maxValue);
 
@@ -53,106 +70,203 @@
         .tickValues(d3.range(0, maxValue + 1))
     );
   }
+
+  function toggleBar(index, event) {
+    if (!event.key || event.key === "Enter" || event.key === " ") {
+      selectedIndex = index;
+
+      const d = data[index];
+      liveText = `${d.label}: ${d.value} projects selected.`;
+    }
+  }
 </script>
 
-<div class="container">
-  <svg viewBox="0 0 {width} {height}">
-    <text
-      x={margin.left + innerWidth / 2}
-      y={28}
-      text-anchor="middle"
-      class="chart-title"
+<button
+  on:click={toggleView}
+  aria-pressed={!showChart}
+  aria-label="Toggle between bar chart and table view"
+  class="toggle-button">
+    {showChart ? 'Show Table' : 'Show Chart'}
+</button>
+
+{#if showChart}
+  <div class="container">
+    <svg
+      viewBox={`0 0 ${width} ${height}`}
+      role="img"
+      aria-labelledby="bar-title bar-desc"
     >
-      Projects per Year
-    </text>
+      <title id="bar-title">Projects by Year</title>
+      <desc id="bar-desc">{description}</desc>
 
-    <g
-      transform="translate({margin.left}, {margin.top + innerHeight})"
-      bind:this={xAxis}
-    ></g>
+      <g
+        transform="translate({margin.left}, {margin.top + innerHeight})"
+        bind:this={xAxis}
+      ></g>
 
-    <g
-      transform="translate({margin.left}, {margin.top})"
-      bind:this={yAxis}
-    ></g>
+      <g
+        transform="translate({margin.left}, {margin.top})"
+        bind:this={yAxis}
+      ></g>
 
-    <g transform="translate({margin.left}, {margin.top})">
-      {#each data as d}
-        <rect
-          x={xScale(d.label)}
-          y={yScale(d.value)}
-          width={xScale.bandwidth()}
-          height={innerHeight - yScale(d.value)}
-          fill={colorScale(d.label)}
-        ></rect>
-      {/each}
-
-      {#each maxBars as maxBar}
-        <rect
-          x={xScale(maxBar.label)}
-          y={yScale(maxBar.value)}
-          width={xScale.bandwidth()}
-          height={innerHeight - yScale(maxBar.value)}
-          fill="none"
-          stroke="black"
-          stroke-width="2.5"
-        ></rect>
-      {/each}
-
-      {#if maxBars.length > 0}
-        {#each maxBars as maxBar}
-          <line
-            x1={xScale(maxBar.label) + xScale.bandwidth() / 2}
-            y1={yScale(maxBar.value)}
-            x2={tieCenterX}
-            y2={yScale(maxValue) - 30}
+      <g transform={`translate(${margin.left}, ${margin.top})`}>
+        {#each data as d, index}
+          <rect
+            x={xScale(d.label)}
+            y={yScale(d.value)}
+            width={xScale.bandwidth()}
+            height={innerHeight - yScale(d.value)}
+            fill={colorScale(d.label)}
             stroke="black"
-            stroke-width="1.2"
-          ></line>
+            opacity={selectedIndex === -1 || selectedIndex === index ? 1 : 0.45}
+            tabindex="0"
+            role="button"
+            aria-label={`Select ${d.label} with ${d.value} projects`}
+            stroke-width={selectedIndex === index ? 3 : 1}
+            on:click={(e) => toggleBar(index, e)}
+            on:keyup={(e) => toggleBar(index, e)}
+          />
         {/each}
 
+        {#each maxBars as maxBar}
+          <rect
+            x={xScale(maxBar.label)}
+            y={yScale(maxBar.value)}
+            width={xScale.bandwidth()}
+            height={innerHeight - yScale(maxBar.value)}
+            fill="none"
+            stroke="black"
+            stroke-width="2.5"
+          ></rect>
+        {/each}
+
+        {#if maxBars.length > 0}
+          {#each maxBars as maxBar}
+            <line
+              x1={xScale(maxBar.label) + xScale.bandwidth() / 2}
+              y1={yScale(maxBar.value)}
+              x2={tieCenterX}
+              y2={yScale(maxValue) - 30}
+              stroke="black"
+              stroke-width="1.2"
+            ></line>
+          {/each}
+
+          <text
+            x={tieCenterX}
+            y={yScale(maxValue) - 35}
+            text-anchor="middle"
+            class="annotation"
+          >
+            {annotationText}
+          </text>
+        {/if}
+
         <text
-          x={tieCenterX}
-          y={yScale(maxValue) - 35}
+          x={innerWidth / 2}
+          y={innerHeight + 60}
           text-anchor="middle"
-          class="annotation"
+          class="axis-label"
         >
-          {annotationText}
+          Year
         </text>
-      {/if}
 
-      <text
-        x={innerWidth / 2}
-        y={innerHeight + 60}
-        text-anchor="middle"
-        class="axis-label"
-      >
-        Year
-      </text>
+        <text
+          x={-(innerHeight / 2)}
+          y={-55}
+          text-anchor="middle"
+          transform="rotate(-90)"
+          class="axis-label"
+        >
+          Number of Projects
+        </text>
+      </g>
+    </svg>
 
-      <text
-        x={-(innerHeight / 2)}
-        y={-55}
-        text-anchor="middle"
-        transform="rotate(-90)"
-        class="axis-label"
-      >
-        Number of Projects
-      </text>
-    </g>
-  </svg>
+    <p aria-live="polite" class="sr-only">{liveText}</p>
 
-  <ul class="legend">
-    {#each data as d}
-      <li style="--color: {colorScale(d.label)}">
-        <span class="swatch"></span>
-        <span>{d.label} <em>({d.value})</em></span>
-      </li>
-    {/each}
-  </ul>
-</div>
+    <ul class="legend">
+      {#each data as d}
+        <li style="--color: {colorScale(d.label)}">
+          <span class="swatch"></span>
+          <span>{d.label} <em>({d.value})</em></span>
+        </li>
+      {/each}
+    </ul>
+  </div>
+{:else}
+  <table aria-label="Table showing project counts by year" class="data-table">
+      <caption>Projects by Year</caption>
+      <thead>
+          <tr>
+            <th id="year-header" scope="col">Year</th>
+            <th id="projects-header" scope="col">Projects</th>
+          </tr>
+        </thead>
+      <tbody>
+          {#each data as d, i}
+            <tr>
+              <th id="row-{i}" scope="row">{d.label}</th>
+              <td aria-labelledby="row-{i} projects-header">{d.value}</td>
+            </tr>
+          {/each}
+        </tbody>
+    </table>
+    {/if}
+
 
 <style>
+  rect:focus-visible {
+    stroke: white;
+    stroke-width: 2px;
+    stroke-dasharray: 4; /* Adjust the dash length as needed */
+    }
+  .data-table {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border-collapse: collapse;
+    width: 100%;
+    max-width: 30em;
+  }
+
+  .data-table caption {
+    font-weight: bold;
+    margin-bottom: 0.5em;
+    text-align: left;
+  }
+
+  .data-table th,
+  .data-table td {
+    border: 1px solid #ccc;
+    padding: 0.5em;
+    text-align: left;
+  }
+
+  .data-table th {
+    background-color: #f0f0f0;
+  }
+  .sr-only {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+  rect {
+    transition: 300ms;
+    outline: none;
+  }
+
+  svg:hover rect:not(:hover),
+  .container:focus-within rect:not(:focus-visible) {
+    opacity: 50%;
+  }
+
+  rect:focus-visible {
+    stroke: white;
+    stroke-width: 2px;
+    stroke-dasharray: 4;
+  }
   svg {
     width: 100%;
     max-width: 700px;
