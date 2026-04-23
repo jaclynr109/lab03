@@ -1,5 +1,13 @@
 [
     {
+      "title": "BikeWatch: Boston Bike Traffic Explorer",
+      "year": 2026,
+      "description": "An interactive map visualizing Bluebikes traffic patterns across Boston and Cambridge, including time-of-day filtering, station flow direction, and isochrone accessibility analysis.",
+      "image": "/images/bikemap.png",
+      "url": "https://jaclynr109.github.io/bikemap/",
+      "story": "I was interested in how movement through a city changes over the course of a day, not just in volume but in direction and accessibility. This project became a way to layer those dynamics together—using time filtering, directional flow, and isochrones to make patterns in commuting and urban access more legible. It reinforced my interest in using interactive visualization not just to display data, but to surface relationships that are otherwise hard to see."
+    },
+    {
       "title": "Charging Ahead: V2G School Bus Thesis",
       "year": 2026,
       "image": "/images/V2G.jpeg",

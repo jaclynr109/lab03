@@ -4,7 +4,13 @@
 </script>
 
 <article>
-  <h2>{data.title}</h2>
+  {#if data.url}
+    <a href={data.url} target="_blank" rel="noopener noreferrer">
+      <h2>{data.title}</h2>
+    </a>
+  {:else}
+    <h2>{data.title}</h2>
+  {/if}
 
   {#if data.image}
     <img src={`${base}${data.image}`} alt={data.title} />
